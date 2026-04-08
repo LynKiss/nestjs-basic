@@ -1,14 +1,20 @@
 ﻿import 'dotenv/config';
 import { ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'node:path';
 import { AppModule } from './app.module';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 // Ham bootstrap la diem bat dau chay cua ung dung NestJS.
 async function bootstrap() {
   // Tao ung dung NestJS tu AppModule.
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const reflector = app.get(Reflector);
+
+  // Dang ky JWT guard o muc global theo cach khoi tao trong main.ts.
+  // Route nao can bo qua xac thuc thi gan them @Public().
+  app.useGlobalGuards(new JwtAuthGuard(reflector));
 
   // Khai bao thu muc chua file tinh nhu css, js, image.
   app.useStaticAssets(join(__dirname, '..', 'public'));
