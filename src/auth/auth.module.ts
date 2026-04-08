@@ -6,6 +6,7 @@ import { LocalStrategy } from './passport/local.strategy';
 import { JwtStrategy } from './passport/jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import ms, { StringValue } from 'ms';
 
 @Module({
   imports: [
@@ -14,12 +15,21 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET') ?? '',
-        signOptions: {
-          expiresIn: configService.get<string>('JWT_EXPIRED') ?? '60s',
-        },
-      }),
+      useFactory: async (configService: ConfigService) => {
+        const jwtExpires =
+          (configService.get<string>('JWT_EXPIRED') as
+            | StringValue
+            | undefined) ?? '60s';
+
+        return {
+          secret: configService.get<string>('JWT_SECRET') ?? '',
+          signOptions: {
+            // ms() tra ve mili-giay, trong khi expiresIn dang number lai duoc hieu la giay.
+            // Vi vay can doi tu ms sang seconds de tranh token song lau hon mong doi.
+            expiresIn: Math.floor(ms(jwtExpires) / 1000),
+          },
+        };
+      },
     }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],
