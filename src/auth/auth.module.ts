@@ -6,7 +6,8 @@ import { LocalStrategy } from './passport/local.strategy';
 import { JwtStrategy } from './passport/jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import ms, { StringValue } from 'ms';
+import { StringValue } from 'ms';
+import ms = require('ms');
 
 @Module({
   imports: [

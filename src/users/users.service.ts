@@ -1,56 +1,67 @@
-﻿import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model } from 'mongoose';
+import mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './schemas/user.schema';
+import { User, UserDocument } from './schemas/user.schema';
+import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: SoftDeleteModel<UserDocument>,
+  ) {}
 
-  // Ham nay nhan password goc va tra ve password da duoc hash bang bcrypt.
+  // Luon hash password truoc khi ghi DB de tranh luu plain text.
   hashPassword = (password: string) => {
-    // Tao salt de tang do an toan khi hash password.
     const salt = bcrypt.genSaltSync(10);
-
-    // Ket hop password voi salt de tao ra chuoi hash.
     const hash = bcrypt.hashSync(password, salt);
-
-    // Tra ve password da ma hoa.
     return hash;
   };
+
+  // Validate ObjectId som de API tra ve loi ro rang, thay vi cast error tu Mongoose.
+  private validateObjectId(id: string) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new BadRequestException('Invalid user id');
+    }
+  }
 
   async create(createUserDto: CreateUserDto) {
     const user = await this.userModel.create({
       ...createUserDto,
-      // Khong luu password goc vao database, chi luu password da hash.
       password: this.hashPassword(createUserDto.password),
     });
-    return user;
+
+    // CRUD response khong nen tra hash password ra ngoai client.
+    const { password, ...result } = user.toObject();
+    return result;
   }
 
-  // Neu viet theo Node.js thuong thi tuong duong:
-  // const users = await UserModel.find();
   findAll() {
-    return this.userModel.find();
+    return this.userModel.find().select('-password');
   }
 
   async findOne(id: string) {
-    // Kiem tra id co dung dinh dang MongoDB ObjectId hay khong.
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return 'not found user';
+    this.validateObjectId(id);
+
+    const user = await this.userModel.findOne({
+      _id: id,
+    }).select('-password');
+
+    if (!user) {
+      throw new NotFoundException('User not found');
     }
 
-    // Neu viet theo Node.js thuong thi tuong duong:
-    // const user = await UserModel.findOne({ _id: req.params.id });
-    return this.userModel.findOne({
-      _id: id,
-    });
+    return user;
   }
 
-  async findOneByUseName(username: string) {
+  // Method nay duoc auth dung de login, nen van can password hash de compare.
+  async findOneByUsername(username: string) {
     return this.userModel.findOne({
       email: username,
     });
@@ -60,27 +71,43 @@ export class UsersService {
     return bcrypt.compareSync(password, hash);
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
-    // Neu viet theo Node.js thuong thi tuong duong:
-    // await UserModel.updateOne({ _id: req.params.id }, req.body);
-    return this.userModel.updateOne(
-      {
-        _id: id,
-      },
-      { ...updateUserDto },
-    );
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    this.validateObjectId(id);
+
+    const updatePayload = { ...updateUserDto } as UpdateUserDto & {
+      password?: string;
+    };
+
+    // Hardening: neu request van gui password thi service se hash truoc khi update.
+    if (updatePayload.password) {
+      updatePayload.password = this.hashPassword(updatePayload.password);
+    }
+
+    const updatedUser = await this.userModel
+      .findByIdAndUpdate(id, updatePayload, {
+        new: true,
+        runValidators: true,
+      })
+      .select('-password');
+
+    if (!updatedUser) {
+      throw new NotFoundException('User not found');
+    }
+
+    return updatedUser;
   }
 
   async remove(id: string) {
-    // Kiem tra id co dung dinh dang MongoDB ObjectId hay khong.
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return 'not found user';
-    }
+    this.validateObjectId(id);
 
-    // Neu viet theo Node.js thuong thi tuong duong:
-    // await UserModel.deleteOne({ _id: req.params.id });
-    return this.userModel.deleteOne({
+    const result = await this.userModel.softDelete({
       _id: id,
     });
+
+    if (!result.deleted) {
+      throw new NotFoundException('User not found');
+    }
+
+    return result;
   }
 }
