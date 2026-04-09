@@ -1,6 +1,10 @@
 npm i --save-exact ejs
 
 
+- Tạo nhanh 
+nest g resource +name
+
+
 passport
 
 jwt 
@@ -9,3 +13,12 @@ $ npm install --save-dev @types/passport-jwt
 
 -phân trang
 npm i api-query-params 
+
+
+cors
+ // config Cors
+  app.enableCors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+  });

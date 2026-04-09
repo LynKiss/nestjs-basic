@@ -28,6 +28,13 @@ async function bootstrap() {
   // Bat validate du lieu tu dong cho tat ca request dua tren DTO.
   app.useGlobalPipes(new ValidationPipe());
 
+  // config Cors
+  app.enableCors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+  });
+
   // Chay server o cong PORT trong file .env, neu khong co thi dung cong 3000.
   await app.listen(process.env.PORT || 3000);
 }
