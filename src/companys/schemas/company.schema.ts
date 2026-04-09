@@ -14,6 +14,28 @@ export class Company {
   @Prop()
   description: string;
 
+  @Prop({
+    type: {
+      _id: { type: String, required: true },
+      email: { type: String, required: true },
+    },
+  })
+  createdBy: {
+    _id: string;
+    email: string;
+  };
+
+  @Prop({
+    type: {
+      _id: { type: String, required: true },
+      email: { type: String, required: true },
+    },
+  })
+  deletedBy: {
+    _id: string;
+    email: string;
+  };
+
   @Prop()
   createAt: Date;
 
