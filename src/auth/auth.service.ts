@@ -1,4 +1,4 @@
-import ms from 'ms';
+import ms = require('ms');
 import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../users/users.service';
 
@@ -40,16 +40,20 @@ export class AuthService {
 
     const { password, ...result } = user.toObject();
 
-    return result;
+    return {
+      ...result,
+      // Chuan hoa _id thanh string som de cac buoc ky JWT va update DB on dinh hon.
+      _id: user._id.toString(),
+    };
   }
 
   // Gom chung payload de access token va refresh token luon mang cung danh tinh user.
   private buildTokenPayload(user: IUser) {
-    const { _id, name, email, role } = user;
+    const { name, email, role } = user;
     return {
       sub: 'token login',
       iss: 'from server',
-      _id,
+      _id: user._id.toString(),
       name,
       email,
       role,
@@ -82,7 +86,8 @@ export class AuthService {
   }
 
   async login(user: IUser) {
-    const { _id, name, email, role } = user;
+    const _id = user._id.toString();
+    const { name, email, role } = user;
     const payload = this.buildTokenPayload(user);
     const accessTokenExpiresIn = this.getAccessTokenExpires();
     const refresh_token = this.createRefreshToken(payload);
@@ -146,7 +151,7 @@ export class AuthService {
   }
 
   async logout(user: IUser) {
-    await this.usersService.updateUserRefreshToken(user._id, null);
+    await this.usersService.updateUserRefreshToken(user._id.toString(), null);
 
     return {
       success: true,
