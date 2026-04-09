@@ -6,12 +6,15 @@ import { join } from 'node:path';
 import { AppModule } from './app.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { TransformInterceptor } from './core/transform.interceptor';
+import cookieParser from 'cookie-parser';
 
 // Ham bootstrap la diem bat dau chay cua ung dung NestJS.
 async function bootstrap() {
   // Tao ung dung NestJS tu AppModule.
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const reflector = app.get(Reflector);
+
+  app.use(cookieParser());
 
   // Dang ky JWT guard o muc global theo cach khoi tao trong main.ts.
   // Route nao can bo qua xac thuc thi gan them @Public().

@@ -22,3 +22,7 @@ cors
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,
   });
+
+
+  npm i cookie-parser
+  npm i -D @types/cookie-parser
