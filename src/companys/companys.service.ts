@@ -122,7 +122,7 @@ export class CompanysService {
 
       // @ts-ignore: Unreachable code error
 
-      .sort(sort)
+      .sort(sort as any)
 
       .populate(population)
 
@@ -131,7 +131,6 @@ export class CompanysService {
     return {
 
       meta: {
-
         current: currentPage, // trang hiện tại
 
         pageSize: limit, // số lượng bản ghi đã lấy

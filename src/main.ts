@@ -1,10 +1,11 @@
 ﻿import 'dotenv/config';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'node:path';
 import { AppModule } from './app.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { TransformInterceptor } from './core/transform.interceptor';
 
 // Ham bootstrap la diem bat dau chay cua ung dung NestJS.
 async function bootstrap() {
@@ -28,6 +29,8 @@ async function bootstrap() {
   // Bat validate du lieu tu dong cho tat ca request dua tren DTO.
   app.useGlobalPipes(new ValidationPipe());
 
+  app.useGlobalInterceptors(new TransformInterceptor(reflector));
+
   // config Cors
   app.enableCors({
     origin: '*',
@@ -35,6 +38,12 @@ async function bootstrap() {
     preflightContinue: false,
   });
 
+  app.setGlobalPrefix('api');
+  //config version link
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: '1',
+  });
   // Chay server o cong PORT trong file .env, neu khong co thi dung cong 3000.
   await app.listen(process.env.PORT || 3000);
 }

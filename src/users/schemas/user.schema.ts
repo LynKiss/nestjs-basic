@@ -1,3 +1,4 @@
+import { Company } from './../../companys/schemas/company.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { timeStamp } from 'console';
 import { HydratedDocument } from 'mongoose';
@@ -16,10 +17,12 @@ export class User {
   name: string;
 
   @Prop()
-  phone: string;
+  company: string;
 
   @Prop()
   age: number;
+  @Prop()
+  gender: string;
 
   @Prop()
   address: string;
