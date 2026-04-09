@@ -19,12 +19,12 @@ import { AuthController } from './auth.controller';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
         const jwtExpires =
-          (configService.get<string>('JWT_EXPIRED') as
+          (configService.get<string>('JWT__ACCESS_EXPIRED') as
             | StringValue
             | undefined) ?? '60s';
 
         return {
-          secret: configService.get<string>('JWT_SECRET') ?? '',
+          secret: configService.get<string>('JWT__ACCESS_SECRET') ?? '',
           signOptions: {
             // ms() tra ve mili-giay, trong khi expiresIn dang number lai duoc hieu la giay.
             // Vi vay can doi tu ms sang seconds de tranh token song lau hon mong doi.

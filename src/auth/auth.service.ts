@@ -1,9 +1,14 @@
+import ms from 'ms';
+import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../users/users.service';
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { JwtService } from '@nestjs/jwt';
 import { IUser } from '../users/users.interface';
+import { RegisterUserDto } from '../users/dto/create-user.dto';
+import { StringValue } from 'ms';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @Injectable()
 export class AuthService {
@@ -11,6 +16,7 @@ export class AuthService {
     private usersService: UsersService,
 
     private jwtService: JwtService,
+    private configService: ConfigService,
   ) { }
 
   async validateUser(username: string, pass: string): Promise<any> {
@@ -36,9 +42,11 @@ export class AuthService {
 
     return result;
   }
-  async login(user: IUser) {
+
+  // Gom chung payload de access token va refresh token luon mang cung danh tinh user.
+  private buildTokenPayload(user: IUser) {
     const { _id, name, email, role } = user;
-    const payload = {
+    return {
       sub: 'token login',
       iss: 'from server',
       _id,
@@ -46,12 +54,111 @@ export class AuthService {
       email,
       role,
     };
+  }
+
+  private getRefreshTokenSecret() {
+    return this.configService.get<string>('JWT_REFRESH_TOKEN') ?? '';
+  }
+
+  private getAccessTokenExpires() {
+    return (
+      (this.configService.get<string>('JWT__ACCESS_EXPIRED') as
+        | StringValue
+        | undefined) ?? '300s'
+    );
+  }
+
+  private getRefreshTokenExpires() {
+    return (
+      (this.configService.get<string>('JWT_REFRESH_EXPIRED') as
+        | StringValue
+        | undefined) ?? '6000s'
+    );
+  }
+
+  // jsonwebtoken nhan string nhu "300s", con FE thuong can seconds de hien thi countdown.
+  private toExpiresInSeconds(duration: StringValue) {
+    return Math.floor(ms(duration) / 1000);
+  }
+
+  async login(user: IUser) {
+    const { _id, name, email, role } = user;
+    const payload = this.buildTokenPayload(user);
+    const accessTokenExpiresIn = this.getAccessTokenExpires();
+    const refresh_token = this.createRefreshToken(payload);
+
+    await this.usersService.updateUserRefreshToken(_id, refresh_token);
+
     return {
       access_token: this.jwtService.sign(payload),
-      _id,
-      name,
-      email,
-      role,
+      refresh_token,
+      access_token_expires_in: this.toExpiresInSeconds(accessTokenExpiresIn),
+      refresh_token_expires_in: this.toExpiresInSeconds(
+        this.getRefreshTokenExpires(),
+      ),
+      user: {
+        _id,
+        name,
+        email,
+        role,
+      },
     };
   }
+
+  async register(registerUserDto: RegisterUserDto) {
+    return this.usersService.register(registerUserDto);
+  }
+
+  async refreshToken(refreshTokenDto: RefreshTokenDto) {
+    const { refreshToken } = refreshTokenDto;
+
+    if (!refreshToken) {
+      throw new UnauthorizedException('Refresh token khong hop le');
+    }
+
+    const payload = this.jwtService.verify(refreshToken, {
+      secret: this.getRefreshTokenSecret(),
+    }) as IUser;
+
+    const user = await this.usersService.findOneByIdForAuth(payload._id);
+
+    if (!user || !user.refreshToken) {
+      throw new UnauthorizedException('Refresh token khong hop le');
+    }
+
+    const isRefreshTokenValid = this.usersService.checkUserPassword(
+      refreshToken,
+      user.refreshToken,
+    );
+
+    if (!isRefreshTokenValid) {
+      throw new UnauthorizedException('Refresh token khong hop le');
+    }
+
+    const currentUser = {
+      _id: user._id.toString(),
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    };
+
+    return this.login(currentUser);
+  }
+
+  async logout(user: IUser) {
+    await this.usersService.updateUserRefreshToken(user._id, null);
+
+    return {
+      success: true,
+    };
+  }
+
+  createRefreshToken = (payload: ReturnType<AuthService['buildTokenPayload']>) => {
+    const refresh_token = this.jwtService.sign(payload, {
+      secret: this.getRefreshTokenSecret(),
+      // Giữ nguyên string duration de tranh nham lan giữa seconds va milliseconds.
+      expiresIn: this.getRefreshTokenExpires(),
+    });
+    return refresh_token;
+  };
 }

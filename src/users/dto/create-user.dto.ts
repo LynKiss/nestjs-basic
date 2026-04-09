@@ -48,6 +48,7 @@ export class CreateUserDto {
   @IsString()
   password: string;
 
+  @Type(() => Number)
   @IsNumber()
   @IsNotEmpty({
     message: 'Age khong duoc de trong',
@@ -65,6 +66,12 @@ export class CreateUserDto {
   })
   @IsString()
   address: string;
+
+  @IsNotEmpty({
+    message: 'Role khong duoc de trong',
+  })
+  @IsString()
+  role: string;
 
   @IsNotEmpty({
     message: 'Company khong duoc de trong',
@@ -97,4 +104,23 @@ export class RegisterUserDto {
   })
   @IsString()
   password: string;
+
+  @Type(() => Number)
+  @IsNumber()
+  @IsNotEmpty({
+    message: 'Age khong duoc de trong',
+  })
+  age: number;
+
+  @IsNotEmpty({
+    message: 'Gender khong duoc de trong',
+  })
+  @IsString()
+  gender: string;
+
+  @IsNotEmpty({
+    message: 'Address khong duoc de trong',
+  })
+  @IsString()
+  address: string;
 }

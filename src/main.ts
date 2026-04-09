@@ -27,7 +27,11 @@ async function bootstrap() {
   app.setViewEngine('ejs');
 
   // Bat validate du lieu tu dong cho tat ca request dua tren DTO.
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    }),
+  );
 
   app.useGlobalInterceptors(new TransformInterceptor(reflector));
 
