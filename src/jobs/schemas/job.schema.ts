@@ -22,12 +22,14 @@ export class Job {
     type: {
       _id: { type: mongoose.Schema.Types.ObjectId, ref: 'Company' },
       name: { type: String },
+      logo: { type: String },
     },
     required: true,
   })
   company: {
     _id: mongoose.Schema.Types.ObjectId;
     name: string;
+    logo?: string;
   };
 
   // Dia diem lam viec cua job: Ha Noi, HCM, Remote...

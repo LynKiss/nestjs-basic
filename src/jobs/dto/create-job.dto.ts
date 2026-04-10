@@ -29,6 +29,11 @@ class CompanyDto {
     message: 'Ten cong ty khong duoc de trong',
   })
   name: string;
+
+  // Logo cua cong ty da upload truoc do, frontend chi can gui lai ten file.
+  @IsOptional()
+  @IsString()
+  logo?: string;
 }
 
 // DTO tao job.

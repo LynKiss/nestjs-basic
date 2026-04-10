@@ -9,7 +9,7 @@ import {
   Query,
   Version,
 } from '@nestjs/common';
-import { ResponseMessage, User } from '../decorator/customize';
+import { Public, ResponseMessage, User } from '../decorator/customize';
 import { IUser } from '../users/users.interface';
 import { CompanysService } from './companys.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
@@ -28,6 +28,7 @@ export class CompanysController {
     return this.companysService.create(createCompanyDto, user);
   }
 
+  @Public()
   @Get()
   @ResponseMessage('Lay danh sach cong ty thanh cong (v1)')
   findAll(
@@ -38,6 +39,7 @@ export class CompanysController {
     return this.companysService.findAll(+currentPage, +limit, qs);
   }
 
+  @Public()
   @Version('2')
   @Get()
   @ResponseMessage('Lay danh sach cong ty thanh cong (v2)')
@@ -49,6 +51,7 @@ export class CompanysController {
     return this.companysService.findAll(+currentPage, +limit, qs);
   }
 
+  @Public()
   @Get(':id')
   @ResponseMessage('Lay chi tiet cong ty thanh cong')
   findOne(@Param('id') id: string) {

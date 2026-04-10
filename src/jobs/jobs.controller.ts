@@ -8,7 +8,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ResponseMessage, User } from '../decorator/customize';
+import { Public, ResponseMessage, User } from '../decorator/customize';
 import { IUser } from '../users/users.interface';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
@@ -31,6 +31,7 @@ export class JobsController {
   }
 
   // Lay danh sach job co ho tro pagination/filter.
+  @Public()
   @Get()
   @ResponseMessage('Lay danh sach job thanh cong')
   findAll(
@@ -42,6 +43,7 @@ export class JobsController {
   }
 
   // Lay chi tiet mot job theo id.
+  @Public()
   @Get(':id')
   @ResponseMessage('Lay chi tiet job thanh cong')
   findOne(@Param('id') id: string) {

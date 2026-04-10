@@ -13,6 +13,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Public, ResponseMessage } from '../decorator/customize';
 import { FilesService } from './files.service';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
@@ -31,10 +32,12 @@ type UploadedFilePayload = {
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
-  // Upload file qua form-data voi field name la "file".
+  // Upload file qua form-data voi field name la "fileUpload".
   // Pipe nay cho phep mot so dinh dang thong dung va gioi han kich thuoc toi da 1MB.
+  @Public()
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
+  @ResponseMessage('Upload Single File')
+  @UseInterceptors(FileInterceptor('fileUpload'))
   async uploadFile(
     @UploadedFile(
       new ParseFilePipeBuilder()
@@ -56,7 +59,7 @@ export class FilesController {
     } catch (error) {
       await this.filesService.removeUploadedFile(file?.path);
       throw new InternalServerErrorException('Upload file that bai');
-    };
+    }
   }
 
   @Get()
