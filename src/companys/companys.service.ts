@@ -100,9 +100,9 @@ export class CompanysService {
 
     const { filter, sort, projection, population } = aqp(qs);
 
-    delete filter.page;
+    delete filter.current;
 
-    delete filter.limit;
+    delete filter.pageSize;
 
     const offset = (+currentPage - 1) * +limit;
 

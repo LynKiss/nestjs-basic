@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Req,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 
@@ -23,8 +15,6 @@ import {
 } from '../decorator/customize';
 
 import { RegisterUserDto } from '../users/dto/create-user.dto';
-
-import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 import { IUser } from '../users/users.interface';
 import { Request, Response } from 'express';
@@ -64,13 +54,17 @@ export class AuthController {
 
   @Public()
 
-  @Post('/auth/refresh')
+  @Get('/auth/refresh')
 
   @ResponseMessage('Get new access token by refresh token')
 
-  refresh(@Body() refreshTokenDto: RefreshTokenDto) {
+  refresh(
+    @Req() req: Request,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const refreshToken = req.cookies?.refresh_token;
 
-    return this.authService.refreshToken(refreshTokenDto);
+    return this.authService.refreshToken(refreshToken, response);
 
   }
 
@@ -94,21 +88,30 @@ export class AuthController {
 
   @ResponseMessage('User Logout')
 
-  logout(@CurrentUser() user: IUser) {
+  logout(
+    @CurrentUser() user: IUser,
+    @Res({ passthrough: true }) response: Response,
+  ) {
 
-    return this.authService.logout(user);
+    return this.authService.logout(user, response);
 
   }
 
 
 
-  // Route nay khong can gan JwtAuthGuard nua vi APP_GUARD da bao ve toan bo app.
+  // Route nay dung de FE goi lai thong tin account hien tai sau khi F5.
 
-  @Get('profile')
+  @Get('/auth/account')
 
-  getProfile(@Req() req: Request) {
+  @ResponseMessage('Get user information')
 
-    return req.user;
+  getAccount(@Req() req: Request) {
+
+    return {
+
+      user: req.user,
+
+    };
 
   }
 

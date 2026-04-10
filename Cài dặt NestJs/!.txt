@@ -26,3 +26,6 @@ cors
 
   npm i cookie-parser
   npm i -D @types/cookie-parser
+
+-Upload file
+npm i -D @types/multer

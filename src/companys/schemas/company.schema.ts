@@ -11,6 +11,10 @@ export class Company {
   @Prop({ required: true })
   address: string;
 
+  // Logo chi luu ten file/duong dan string, khong luu binary trong database.
+  @Prop()
+  logo: string;
+
   @Prop()
   description: string;
 

@@ -7,6 +7,8 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 import { CompanysModule } from './companys/companys.module';
+import { JobsModule } from './jobs/jobs.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { CompanysModule } from './companys/companys.module';
     UsersModule,
     AuthModule,
     CompanysModule,
+    JobsModule,
+    FilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

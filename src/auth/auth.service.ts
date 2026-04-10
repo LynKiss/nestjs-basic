@@ -34,10 +34,6 @@ import { StringValue } from 'ms';
 
 
 
-import { RefreshTokenDto } from './dto/refresh-token.dto';
-
-
-
 @Injectable()
 
 export class AuthService {
@@ -228,6 +224,28 @@ export class AuthService {
 
   }
 
+  private clearRefreshTokenCookie(response: Response) {
+    response.clearCookie('refresh_token', {
+      httpOnly: true,
+      sameSite: 'lax',
+    });
+  }
+
+  private buildAuthResponse(user: IUser, accessToken: string) {
+    return {
+      access_token: accessToken,
+      access_token_expires_in: this.toExpiresInSeconds(
+        this.getAccessTokenExpires(),
+      ),
+      user: {
+        _id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    };
+  }
+
 
 
   async login(user: IUser, response?: Response) {
@@ -265,45 +283,11 @@ export class AuthService {
 
 
     return {
-
-      access_token: this.jwtService.sign(payload),
-
-
-
+      ...this.buildAuthResponse(user, this.jwtService.sign(payload)),
       refresh_token,
-
-
-
-      access_token_expires_in: this.toExpiresInSeconds(accessTokenExpiresIn),
-
-
-
       refresh_token_expires_in: this.toExpiresInSeconds(
-
         this.getRefreshTokenExpires(),
-
       ),
-
-
-
-      user: {
-
-        _id,
-
-
-
-        name,
-
-
-
-        email,
-
-
-
-        role,
-
-      },
-
     };
 
   }
@@ -318,9 +302,7 @@ export class AuthService {
 
 
 
-  async refreshToken(refreshTokenDto: RefreshTokenDto) {
-
-    const { refreshToken } = refreshTokenDto;
+  async refreshToken(refreshToken: string | undefined, response: Response) {
 
 
 
@@ -392,15 +374,28 @@ export class AuthService {
 
 
 
-    return this.login(currentUser);
+    const newPayload = this.buildTokenPayload(currentUser);
+    const newRefreshToken = this.createRefreshToken(newPayload);
+
+    this.setRefreshTokenCookie(response, newRefreshToken);
+    await this.usersService.updateUserRefreshToken(
+      currentUser._id.toString(),
+      newRefreshToken,
+    );
+
+    return this.buildAuthResponse(
+      currentUser,
+      this.jwtService.sign(newPayload),
+    );
 
   }
 
 
 
-  async logout(user: IUser) {
+  async logout(user: IUser, response: Response) {
 
     await this.usersService.updateUserRefreshToken(user._id.toString(), null);
+    this.clearRefreshTokenCookie(response);
 
 
 

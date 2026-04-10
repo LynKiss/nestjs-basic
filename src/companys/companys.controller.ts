@@ -31,8 +31,8 @@ export class CompanysController {
   @Get()
   @ResponseMessage('Lay danh sach cong ty thanh cong (v1)')
   findAll(
-    @Query('page') currentPage: string,
-    @Query('limit') limit: string,
+    @Query('current') currentPage: string,
+    @Query('pageSize') limit: string,
     @Query() qs: string,
   ) {
     return this.companysService.findAll(+currentPage, +limit, qs);
@@ -42,8 +42,8 @@ export class CompanysController {
   @Get()
   @ResponseMessage('Lay danh sach cong ty thanh cong (v2)')
   findAllV2(
-    @Query('page') currentPage: string,
-    @Query('limit') limit: string,
+    @Query('current') currentPage: string,
+    @Query('pageSize') limit: string,
     @Query() qs: string,
   ) {
     return this.companysService.findAll(+currentPage, +limit, qs);
