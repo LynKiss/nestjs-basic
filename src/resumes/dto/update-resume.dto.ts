@@ -1,5 +1,15 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateResumeDto } from './create-resume.dto';
+import { IsIn, IsNotEmpty, IsString } from 'class-validator';
+import { RESUME_STATUS } from './create-resume.dto';
 
-// DTO update resume, ke thua tu DTO create va bien tat ca field thanh optional.
-export class UpdateResumeDto extends PartialType(CreateResumeDto) {}
+// DTO update resume trong bai hoc chu yeu dung de doi trang thai resume.
+// Body PATCH chi can gui status moi.
+export class UpdateResumeDto {
+  @IsString()
+  @IsIn(RESUME_STATUS, {
+    message: 'Status phai thuoc PENDING/REVIEWING/APPROVED/REJECTED',
+  })
+  @IsNotEmpty({
+    message: 'Status khong duoc de trong',
+  })
+  status: string;
+}

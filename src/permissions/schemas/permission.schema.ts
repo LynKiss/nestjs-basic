@@ -1,47 +1,29 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
-import { Role } from '../../roles/schemas/role.schema';
 
-export type UserDocument = HydratedDocument<User>;
+export type PermissionDocument = HydratedDocument<Permission>;
 
+// Moi permission dai dien cho 1 API/backend action trong he thong.
+// Vi du: GET /api/v1/users, POST /api/v1/jobs...
 @Schema({ timestamps: true })
-export class User {
-  @Prop({ required: true, unique: true })
-  email: string;
-
-  @Prop({ required: true })
-  password: string;
-
+export class Permission {
+  // Ten de hien thi tren giao dien quan tri.
   @Prop({ required: true })
   name: string;
 
-  @Prop()
-  age: number;
+  // Duong dan API duoc phep truy cap.
+  @Prop({ required: true })
+  apiPath: string;
 
-  @Prop()
-  gender: string;
+  // HTTP method cua API, vi du GET/POST/PATCH/DELETE.
+  @Prop({ required: true })
+  method: string;
 
-  @Prop()
-  address: string;
+  // Module chua API nay, vi du USERS, JOBS, RESUMES...
+  @Prop({ required: true })
+  module: string;
 
-  @Prop({
-    type: {
-      _id: { type: mongoose.Schema.Types.ObjectId, ref: 'Company' },
-      name: { type: String },
-    },
-  })
-  company: {
-    _id: mongoose.Schema.Types.ObjectId;
-    name: string;
-  };
-
-  // User se tham chieu den 1 role thay vi luu chuoi text nhu truoc.
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Role.name })
-  role: mongoose.Schema.Types.ObjectId;
-
-  @Prop()
-  refreshToken: string;
-
+  // Thong tin nguoi tao de phuc vu audit trail.
   @Prop({
     type: {
       _id: { type: mongoose.Schema.Types.ObjectId },
@@ -53,6 +35,7 @@ export class User {
     email: string;
   };
 
+  // Thong tin nguoi cap nhat gan nhat.
   @Prop({
     type: {
       _id: { type: mongoose.Schema.Types.ObjectId },
@@ -64,6 +47,7 @@ export class User {
     email: string;
   };
 
+  // Thong tin nguoi xoa mem permission.
   @Prop({
     type: {
       _id: { type: mongoose.Schema.Types.ObjectId },
@@ -88,4 +72,4 @@ export class User {
   deletedAt: Date;
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export const PermissionSchema = SchemaFactory.createForClass(Permission);

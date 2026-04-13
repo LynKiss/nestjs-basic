@@ -116,11 +116,31 @@ export class AuthService {
 
   // Gom chung payload de access token va refresh token luon mang cung danh tinh user.
 
+  private extractPermissionsFromRole(role: any) {
+    if (
+      role &&
+      typeof role === 'object' &&
+      Array.isArray((role as any).permissions)
+    ) {
+      return (role as any).permissions;
+    }
+
+    return [];
+  }
+
 
 
   private buildTokenPayload(user: IUser) {
 
     const { name, email, role } = user;
+
+    const normalizedRole =
+      role && typeof role === 'object'
+        ? {
+            _id: role._id?.toString?.() ?? role._id,
+            name: role.name,
+          }
+        : role;
 
 
 
@@ -146,7 +166,7 @@ export class AuthService {
 
 
 
-      role,
+      role: normalizedRole,
 
     };
 
@@ -232,6 +252,24 @@ export class AuthService {
   }
 
   private buildAuthResponse(user: IUser, accessToken: string) {
+    const normalizedRole =
+      user.role && typeof user.role === 'object'
+        ? {
+            _id: user.role._id?.toString?.() ?? user.role._id,
+            name: user.role.name,
+          }
+        : user.role;
+
+    const permissions = this.extractPermissionsFromRole(user.role).map(
+      (permission: any) => ({
+            _id: permission._id?.toString?.() ?? permission._id,
+            name: permission.name,
+            apiPath: permission.apiPath,
+            method: permission.method,
+            module: permission.module,
+          }),
+    );
+
     return {
       access_token: accessToken,
       access_token_expires_in: this.toExpiresInSeconds(
@@ -241,7 +279,8 @@ export class AuthService {
         _id: user._id.toString(),
         name: user.name,
         email: user.email,
-        role: user.role,
+        role: normalizedRole,
+        permissions,
       },
     };
   }
@@ -369,6 +408,8 @@ export class AuthService {
 
 
       role: user.role,
+
+      permissions: this.extractPermissionsFromRole(user.role),
 
     };
 

@@ -1,46 +1,29 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
-import { Role } from '../../roles/schemas/role.schema';
+import { Permission } from '../../permissions/schemas/permission.schema';
 
-export type UserDocument = HydratedDocument<User>;
+export type RoleDocument = HydratedDocument<Role>;
 
+// Role la tap hop cac permission.
+// 1 user se gan 1 role, va role do chua n permission.
 @Schema({ timestamps: true })
-export class User {
+export class Role {
   @Prop({ required: true, unique: true })
-  email: string;
-
-  @Prop({ required: true })
-  password: string;
-
-  @Prop({ required: true })
   name: string;
 
-  @Prop()
-  age: number;
+  @Prop({ required: true })
+  description: string;
 
-  @Prop()
-  gender: string;
+  @Prop({ default: true })
+  isActive: boolean;
 
-  @Prop()
-  address: string;
-
+  // Mang ObjectId tham chieu den collection permissions.
   @Prop({
-    type: {
-      _id: { type: mongoose.Schema.Types.ObjectId, ref: 'Company' },
-      name: { type: String },
-    },
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: Permission.name,
+    required: true,
   })
-  company: {
-    _id: mongoose.Schema.Types.ObjectId;
-    name: string;
-  };
-
-  // User se tham chieu den 1 role thay vi luu chuoi text nhu truoc.
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Role.name })
-  role: mongoose.Schema.Types.ObjectId;
-
-  @Prop()
-  refreshToken: string;
+  permissions: Permission[];
 
   @Prop({
     type: {
@@ -88,4 +71,4 @@ export class User {
   deletedAt: Date;
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export const RoleSchema = SchemaFactory.createForClass(Role);

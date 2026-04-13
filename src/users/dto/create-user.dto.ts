@@ -67,10 +67,12 @@ export class CreateUserDto {
   @IsString()
   address: string;
 
+  @IsMongoId({
+    message: 'Role khong dung dinh dang',
+  })
   @IsNotEmpty({
     message: 'Role khong duoc de trong',
   })
-  @IsString()
   role: string;
 
   @IsNotEmpty({

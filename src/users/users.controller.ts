@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import {
   Public,
@@ -32,8 +33,12 @@ export class UsersController {
   // GET /users
   // Lay danh sach tat ca users.
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  findAll(
+    @Query('current') currentPage: string,
+    @Query('pageSize') limit: string,
+    @Query() qs: string,
+  ) {
+    return this.usersService.findAll(+currentPage, +limit, qs);
   }
 
   // GET /users/:id

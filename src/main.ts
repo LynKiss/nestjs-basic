@@ -6,7 +6,7 @@ import { join } from 'node:path';
 import { AppModule } from './app.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { TransformInterceptor } from './core/transform.interceptor';
-import cookieParser from 'cookie-parser';
+import * as cookieParser from 'cookie-parser';
 
 // Ham bootstrap la diem bat dau chay cua ung dung NestJS.
 async function bootstrap() {
