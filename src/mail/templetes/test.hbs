@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>Jobs Email</title>
+  </head>
+  <body style='margin: 0; padding: 24px; background-color: #f4f4f4; font-family: Arial, sans-serif;'>
+    <table role='presentation' width='100%' cellspacing='0' cellpadding='0'>
+      <tr>
+        <td align='center'>
+          <table
+            role='presentation'
+            width='600'
+            cellspacing='0'
+            cellpadding='0'
+            style='background-color: #ffffff; padding: 24px; border-radius: 12px;'
+          >
+            <tr>
+              <td style='font-size: 24px; font-weight: 700; color: #111827; padding-bottom: 16px;'>
+                Danh sach cong viec
+              </td>
+            </tr>
+            <tr>
+              <td style='font-size: 14px; color: #374151; padding-bottom: 12px;'>
+                Xin chao {{receiver}},
+              </td>
+            </tr>
+            {{#each jobs}}
+              <tr>
+                <td style='padding: 16px 0; border-top: 1px dashed rgba(5, 5, 5, 0.15);'>
+                  <div style='font-size: 18px; font-weight: 600; color: #2563eb; margin-bottom: 8px;'>
+                    <a
+                      href='https://hoidanit.com.vn/'
+                      target='_blank'
+                      style='text-decoration: none; color: #2563eb;'
+                    >{{name}}</a>
+                  </div>
+                  <div style='font-size: 14px; color: #374151; margin-bottom: 4px;'>{{company}}</div>
+                  <div style='font-size: 14px; color: #dc2626; margin-bottom: 10px;'>{{salary}}</div>
+                  <div>
+                    {{#each skills}}
+                      <span
+                        style='display: inline-block; font-size: 13px; color: #111827; background-color: #eef2ff; padding: 6px 10px; border-radius: 999px; margin-right: 8px; margin-bottom: 8px;'
+                      >{{this}}</span>
+                    {{/each}}
+                  </div>
+                </td>
+              </tr>
+            {{/each}}
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

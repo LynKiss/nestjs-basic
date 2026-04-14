@@ -1,0 +1,429 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>nest-basic-hoidanit documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+	   <link rel="stylesheet" href="./styles/style.css">
+        <link rel="stylesheet" href="./styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="./" class="navbar-brand">nest-basic-hoidanit documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content readme">
+                   <div class="content-data">
+
+
+<h1>NestJS Basic</h1>
+<p>Du an NestJS basic cho cac module auth, company, job, user, resume va upload file.</p>
+<h2>Chay du an</h2>
+<ol>
+<li>Cai dependencies:</li>
+</ol>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm install</code></pre></div><ol start="2">
+<li>Chay development:</li>
+</ol>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm run dev</code></pre></div><ol start="3">
+<li>Kiem tra TypeScript:</li>
+</ol>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npx tsc --noEmit</code></pre></div><h2>Ghi chu module resume</h2>
+<p>API lay danh sach resume trong <code>GET /api/v1/resumes</code> ho tro:</p>
+<ul>
+<li><code>current</code>: trang hien tai</li>
+<li><code>pageSize</code>: so phan tu moi trang</li>
+<li><code>populate</code>: cac truong tham chieu can populate, vi du <code>companyId,jobId</code></li>
+<li><code>fields</code>: cac field can tra ve sau khi populate</li>
+</ul>
+<p>Vi du:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">/api/v1/resumes?current=1&amp;pageSize=10&amp;populate=companyId,jobId&amp;fields=companyId._id,companyId.name,companyId.logo,jobId._id,jobId.name</code></pre></div><p>Ket qua mong muon:</p>
+<ul>
+<li><code>companyId</code> duoc populate thanh object company</li>
+<li><code>jobId</code> duoc populate thanh object job</li>
+<li>chi tra ve cac field duoc liet ke trong <code>fields</code></li>
+</ul>
+<h2>Test bang Postman</h2>
+<p>Truoc khi test, can dang nhap de lay <code>access_token</code> va them header:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">Authorization: Bearer &lt;access_token&gt;</code></pre></div><h3>1. Tao permission</h3>
+<p>Method: <code>POST</code></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">http://localhost:8000/api/v1/permissions</code></pre></div><p>Body JSON:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-json">{
+  &quot;name&quot;: &quot;Get users&quot;,
+  &quot;apiPath&quot;: &quot;/api/v1/users&quot;,
+  &quot;method&quot;: &quot;GET&quot;,
+  &quot;module&quot;: &quot;USERS&quot;
+}</code></pre></div><p>Ket qua mong doi:</p>
+<ul>
+<li>tao thanh cong 1 permission moi</li>
+<li>backend tu check cap <code>apiPath + method</code> da ton tai hay chua</li>
+<li>backend tu luu them thong tin <code>createdBy</code></li>
+<li>response co dang:</li>
+</ul>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-json">{
+  &quot;statusCode&quot;: 201,
+  &quot;message&quot;: &quot;Create a new permission&quot;,
+  &quot;data&quot;: {
+    &quot;_id&quot;: &quot;...&quot;,
+    &quot;createdAt&quot;: &quot;...&quot;
+  }
+}</code></pre></div><h3>2. Cap nhat permission</h3>
+<p>Method: <code>PATCH</code></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">http://localhost:8000/api/v1/permissions/&lt;permission_id&gt;</code></pre></div><p>Body JSON:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-json">{
+  &quot;name&quot;: &quot;fetch user&quot;,
+  &quot;apiPath&quot;: &quot;/users&quot;,
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;module&quot;: &quot;BLA BLA&quot;
+}</code></pre></div><p>Yeu cau:</p>
+<ul>
+<li>truyen JWT o header</li>
+<li>truyen dung <code>permission_id</code> tren URL</li>
+</ul>
+<p>Ket qua mong doi:</p>
+<ul>
+<li>response co dang ket qua update:</li>
+</ul>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-json">{
+  &quot;statusCode&quot;: 200,
+  &quot;message&quot;: &quot;Update a permission&quot;,
+  &quot;data&quot;: {
+    &quot;acknowledged&quot;: true,
+    &quot;matchedCount&quot;: 1,
+    &quot;modifiedCount&quot;: 1,
+    &quot;upsertedCount&quot;: 0,
+    &quot;upsertedId&quot;: null
+  }
+}</code></pre></div><h3>3. Lay danh sach permission</h3>
+<p>Method: <code>GET</code></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">http://localhost:8000/api/v1/permissions?current=1&amp;pageSize=10</code></pre></div><p>Yeu cau:</p>
+<ul>
+<li>truyen JWT o header</li>
+<li>truyen dong params de phan trang: <code>current</code>, <code>pageSize</code></li>
+</ul>
+<p>Ket qua mong doi:</p>
+<ul>
+<li>response co <code>meta</code> va <code>result</code></li>
+<li><code>result</code> la danh sach permission da tao</li>
+</ul>
+<h3>4. Lay chi tiet permission</h3>
+<p>Method: <code>GET</code></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">http://localhost:8000/api/v1/permissions/&lt;permission_id&gt;</code></pre></div><p>Yeu cau:</p>
+<ul>
+<li>truyen JWT o header</li>
+<li>truyen dung <code>permission_id</code> tren URL</li>
+</ul>
+<p>Ket qua mong doi:</p>
+<ul>
+<li>response tra ve chi tiet 1 permission</li>
+<li>co day du cac field <code>name</code>, <code>apiPath</code>, <code>method</code>, <code>module</code></li>
+</ul>
+<h3>5. Xoa permission</h3>
+<p>Method: <code>DELETE</code></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">http://localhost:8000/api/v1/permissions/&lt;permission_id&gt;</code></pre></div><p>Yeu cau:</p>
+<ul>
+<li>truyen JWT o header</li>
+<li>truyen dung <code>permission_id</code> tren URL</li>
+</ul>
+<p>Ket qua mong doi:</p>
+<ul>
+<li>response xoa mem thanh cong</li>
+<li>du lieu tra ve co <code>deleted: 1</code> hoac thong tin xoa tu soft delete plugin</li>
+</ul>
+<h3>6. Tao role</h3>
+<p>Method: <code>POST</code></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">http://localhost:8000/api/v1/roles</code></pre></div><p>Body JSON:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-json">{
+  &quot;name&quot;: &quot;HR&quot;,
+  &quot;description&quot;: &quot;Role quan ly module nguoi dung va CV&quot;,
+  &quot;isActive&quot;: true,
+  &quot;permissions&quot;: [&quot;PUT_PERMISSION_ID_HERE&quot;]
+}</code></pre></div><p>Luu y:</p>
+<ul>
+<li>thay <code>PUT_PERMISSION_ID_HERE</code> bang <code>_id</code> that cua permission da tao o buoc 1</li>
+</ul>
+<p>Ket qua mong doi:</p>
+<ul>
+<li>role duoc tao thanh cong</li>
+<li>backend check khong cho trung <code>name</code></li>
+<li>response co dang:</li>
+</ul>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-json">{
+  &quot;statusCode&quot;: 201,
+  &quot;message&quot;: &quot;Create a new role&quot;,
+  &quot;data&quot;: {
+    &quot;_id&quot;: &quot;...&quot;,
+    &quot;createdAt&quot;: &quot;...&quot;
+  }
+}</code></pre></div><h3>7. Lay danh sach role va populate permissions</h3>
+<p>Method: <code>GET</code></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">http://localhost:8000/api/v1/roles?current=1&amp;pageSize=10&amp;populate=permissions&amp;fields=name,description,isActive,permissions</code></pre></div><p>Ket qua mong doi:</p>
+<ul>
+<li>role tra ve co day du thong tin co ban</li>
+<li><code>permissions</code> duoc populate thanh object thay vi chi la ObjectId</li>
+</ul>
+<h3>8. Lay role theo id</h3>
+<p>Method: <code>GET</code></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">http://localhost:8000/api/v1/roles/&lt;role_id&gt;</code></pre></div><p>Yeu cau:</p>
+<ul>
+<li>truyen JWT o header</li>
+<li>truyen dung <code>role_id</code> tren URL</li>
+</ul>
+<p>Ket qua mong doi:</p>
+<ul>
+<li>response tra ve thong tin chi tiet 1 role</li>
+<li><code>permissions</code> duoc populate</li>
+<li>moi permission co cac field <code>_id</code>, <code>apiPath</code>, <code>name</code>, <code>method</code>, <code>module</code></li>
+</ul>
+<h3>9. Cap nhat role</h3>
+<p>Method: <code>PATCH</code></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">http://localhost:8000/api/v1/roles/&lt;role_id&gt;</code></pre></div><p>Body JSON:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-json">{
+  &quot;name&quot;: &quot;Group Admin&quot;,
+  &quot;description&quot;: &quot;Admin thi full quyen :v&quot;,
+  &quot;isActive&quot;: true,
+  &quot;permissions&quot;: [&quot;PUT_PERMISSION_ID_HERE&quot;]
+}</code></pre></div><p>Yeu cau:</p>
+<ul>
+<li>truyen JWT o header</li>
+<li>truyen body dang raw/JSON</li>
+<li>truyen dung <code>role_id</code> tren URL</li>
+</ul>
+<p>Ket qua mong doi:</p>
+<ul>
+<li>response co dang ket qua update:</li>
+</ul>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-json">{
+  &quot;statusCode&quot;: 200,
+  &quot;message&quot;: &quot;Update a role&quot;,
+  &quot;data&quot;: {
+    &quot;acknowledged&quot;: true,
+    &quot;matchedCount&quot;: 1,
+    &quot;modifiedCount&quot;: 1,
+    &quot;upsertedCount&quot;: 0,
+    &quot;upsertedId&quot;: null
+  }
+}</code></pre></div><p>Luu y:</p>
+<ul>
+<li>backend co check trung <code>name</code> khi update</li>
+</ul>
+<h3>10. Xoa role</h3>
+<p>Method: <code>DELETE</code></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">http://localhost:8000/api/v1/roles/&lt;role_id&gt;</code></pre></div><p>Yeu cau:</p>
+<ul>
+<li>truyen JWT o header</li>
+<li>truyen dung <code>role_id</code> tren URL</li>
+</ul>
+<p>Ket qua mong doi:</p>
+<ul>
+<li>response xoa mem thanh cong</li>
+</ul>
+<h3>11. Test API resume by user</h3>
+<p>Method: <code>POST</code></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">http://localhost:8000/api/v1/resumes/by-user</code></pre></div><p>Yeu cau:</p>
+<ul>
+<li>truyen JWT o header</li>
+</ul>
+<p>Ket qua mong doi:</p>
+<ul>
+<li>danh sach resume sap xep giam dan theo <code>createdAt</code></li>
+<li><code>companyId</code> duoc populate va tra ve <code>name</code></li>
+<li><code>jobId</code> duoc populate va tra ve <code>name</code></li>
+</ul>
+<h3>12. Test API resume voi populate company va job</h3>
+<p>Method: <code>GET</code></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">http://localhost:8000/api/v1/resumes?current=1&amp;pageSize=10&amp;populate=companyId,jobId&amp;fields=companyId._id,companyId.name,companyId.logo,jobId._id,jobId.name</code></pre></div><p>Ket qua mong doi:</p>
+<ul>
+<li>status <code>200 OK</code></li>
+<li>trong <code>result</code>, <code>companyId</code> va <code>jobId</code> da duoc populate</li>
+<li>chi cac field khai bao trong <code>fields</code> duoc tra ve</li>
+</ul>
+<h2>Luu y</h2>
+<ul>
+<li>Project dang dung CommonJS, vi vay <code>cookie-parser</code> can import theo kieu <code>import * as cookieParser from &#39;cookie-parser&#39;;</code></li>
+<li>Neu <code>npm run build</code> bao loi <code>EPERM</code> trong thu muc <code>dist</code>, hay dung process Node/Nest dang chay roi build lai.</li>
+</ul>
+<h2>Tham khao</h2>
+<ul>
+<li>Website: <a href="https://hoidanit.com.vn/">https://hoidanit.com.vn/</a></li>
+<li>YouTube: <a href="https://www.youtube.com/@hoidanit">https://www.youtube.com/@hoidanit</a></li>
+<li>TikTok: <a href="https://www.tiktok.com/@hoidanit">https://www.tiktok.com/@hoidanit</a></li>
+<li>Fanpage: <a href="https://www.facebook.com/askITwithERIC/">https://www.facebook.com/askITwithERIC/</a></li>
+<li>Udemy: <a href="https://www.udemy.com/user/eric-7039/">https://www.udemy.com/user/eric-7039/</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 0;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'readme';
+            var COMPODOC_CURRENT_PAGE_URL = 'index.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="./js/libs/custom-elements.min.js"></script>
+       <script src="./js/libs/lit-html.js"></script>
+
+       <script src="./js/menu-wc.js" defer></script>
+       <script nomodule src="./js/menu-wc_es5.js" defer></script>
+
+       <script src="./js/libs/bootstrap-native.js"></script>
+
+       <script src="./js/libs/es6-shim.min.js"></script>
+       <script src="./js/libs/EventDispatcher.js"></script>
+       <script src="./js/libs/promise.min.js"></script>
+
+       <script src="./js/compodoc.js"></script>
+
+       <script src="./js/tabs.js"></script>
+       <script src="./js/menu.js"></script>
+       <script src="./js/libs/clipboard.min.js"></script>
+       <script src="./js/libs/prism.js"></script>
+       <script src="./js/sourceCode.js"></script>
+          <script src="./js/search/search.js"></script>
+          <script src="./js/search/lunr.min.js"></script>
+          <script src="./js/search/search-lunr.js"></script>
+          <script src="./js/search/search_index.js"></script>
+       <script src="./js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

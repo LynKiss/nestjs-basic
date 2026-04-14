@@ -1,0 +1,904 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>nest-basic-hoidanit documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">nest-basic-hoidanit documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >DatabasesService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/databases/databases.service.ts</code>
+        </p>
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#logger" >logger</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getInitPassword" >getInitPassword</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#onModuleInit" >onModuleInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#seedPermissions" >seedPermissions</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#seedRoles" >seedRoles</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#seedUsers" >seedUsers</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#shouldInitData" >shouldInitData</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(userModel: <a href="../classes/User.html" target="_self">SoftDeleteModel&lt;UserDocument&gt;</a>, permissionModel: <a href="../classes/Permission.html" target="_self">SoftDeleteModel&lt;PermissionDocument&gt;</a>, roleModel: <a href="../classes/Role.html" target="_self">SoftDeleteModel&lt;RoleDocument&gt;</a>, configService: ConfigService, usersService: <a href="../injectables/UsersService.html" target="_self">UsersService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/databases/databases.service.ts:31</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>userModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../classes/User.html" target="_self" >SoftDeleteModel&lt;UserDocument&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>permissionModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../classes/Permission.html" target="_self" >SoftDeleteModel&lt;PermissionDocument&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>roleModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../classes/Role.html" target="_self" >SoftDeleteModel&lt;RoleDocument&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>configService</td>
+                                                  
+                                                        <td>
+                                                                    <code>ConfigService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>usersService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/UsersService.html" target="_self" >UsersService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getInitPassword"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getInitPassword</b></span>
+                        <a href="#getInitPassword"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getInitPassword()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="62"
+                                    class="link-to-prism">src/databases/databases.service.ts:62</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onModuleInit"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>onModuleInit</b></span>
+                        <a href="#onModuleInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onModuleInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="197"
+                                    class="link-to-prism">src/databases/databases.service.ts:197</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="seedPermissions"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>seedPermissions</b></span>
+                        <a href="#seedPermissions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>seedPermissions()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="68"
+                                    class="link-to-prism">src/databases/databases.service.ts:68</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="seedRoles"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>seedRoles</b></span>
+                        <a href="#seedRoles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>seedRoles()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="95"
+                                    class="link-to-prism">src/databases/databases.service.ts:95</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="seedUsers"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>seedUsers</b></span>
+                        <a href="#seedUsers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>seedUsers()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="148"
+                                    class="link-to-prism">src/databases/databases.service.ts:148</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="shouldInitData"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>shouldInitData</b></span>
+                        <a href="#shouldInitData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>shouldInitData()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="54"
+                                    class="link-to-prism">src/databases/databases.service.ts:54</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logger"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Logger(DatabasesService.name)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/databases/databases.service.ts:31</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ConfigService } from &#x27;@nestjs/config&#x27;;
+// Logger de ghi log ro rang hon khi app khoi dong va seed data.
+import { Injectable, Logger, OnModuleInit } from &#x27;@nestjs/common&#x27;;
+// InjectModel dung de inject cac mongoose model vao service.
+import { InjectModel } from &#x27;@nestjs/mongoose&#x27;;
+// SoftDeleteModel la model mongoose da duoc mo rong boi plugin soft-delete.
+import { SoftDeleteModel } from &#x27;soft-delete-plugin-mongoose&#x27;;
+// UsersService duoc dung lai de hash password thay vi viet hash truc tiep o day.
+import { UsersService } from &#x27;../users/users.service&#x27;;
+// Import cac hang so seed data va ten role mac dinh.
+import {
+  ADMIN_ROLE,
+  INIT_PERMISSIONS,
+  INIT_USERS,
+  USER_ROLE,
+} from &#x27;./sample&#x27;;
+// Import type/schema permission de inject model permission.
+import {
+  Permission,
+  PermissionDocument,
+} from &#x27;../permissions/schemas/permission.schema&#x27;;
+// Import type/schema role de inject model role.
+import { Role, RoleDocument } from &#x27;../roles/schemas/role.schema&#x27;;
+// Import type/schema user de inject model user.
+import { User, UserDocument } from &#x27;../users/schemas/user.schema&#x27;;
+
+@Injectable()
+export class DatabasesService implements OnModuleInit {
+  // Logger rieng cho service nay de log de nhin va phan biet nguon log.
+  private readonly logger &#x3D; new Logger(DatabasesService.name);
+
+  constructor(
+    // Inject model user de tao va dem user.
+    @InjectModel(User.name)
+    private userModel: SoftDeleteModel&lt;UserDocument&gt;,
+
+    // Inject model permission de tao va truy van permission.
+    @InjectModel(Permission.name)
+    private permissionModel: SoftDeleteModel&lt;PermissionDocument&gt;,
+
+    // Inject model role de tao va truy van role.
+    @InjectModel(Role.name)
+    private roleModel: SoftDeleteModel&lt;RoleDocument&gt;,
+
+    // Service doc bien moi truong.
+    private configService: ConfigService,
+    // Service users de dung ham hashPassword co san trong project.
+    private usersService: UsersService,
+  ) {}
+
+  // Kiem tra co duoc phep init data hay khong.
+  // Chi tra ve true khi SHOULD_INIT trong .env &#x3D; &quot;true&quot;.
+  private shouldInitData() {
+    return (this.configService.get&lt;string&gt;(&#x27;SHOULD_INIT&#x27;) ?? &#x27;&#x27;)
+      .trim()
+      .toLowerCase() &#x3D;&#x3D;&#x3D; &#x27;true&#x27;;
+  }
+
+  // Lay password seed tu .env.
+  // Neu chua co INIT_PASSWORD thi dung tam gia tri mac dinh 123456.
+  private getInitPassword() {
+    return this.configService.get&lt;string&gt;(&#x27;INIT_PASSWORD&#x27;) ?? &#x27;123456&#x27;;
+  }
+
+  // Seed permissions mau vao database.
+  // Ham nay chi them permission chua ton tai, khong tao trung.
+  private async seedPermissions() {
+    // Lay cac permission hien co de doi chieu theo cap method + apiPath.
+    const existingPermissions &#x3D; await this.permissionModel
+      .find({})
+      .select({ apiPath: 1, method: 1 })
+      .lean();
+
+    // Tao Set de kiem tra ton tai nhanh hon.
+    const existingKeys &#x3D; new Set(
+      existingPermissions.map((item) &#x3D;&gt; &#x60;${item.method}:${item.apiPath}&#x60;),
+    );
+
+    // Loc ra nhung permission chua co trong DB.
+    const permissionsToCreate &#x3D; INIT_PERMISSIONS.filter(
+      (item) &#x3D;&gt; !existingKeys.has(&#x60;${item.method}:${item.apiPath}&#x60;),
+    );
+
+    // Chi insert khi thuc su co permission moi can tao.
+    if (permissionsToCreate.length &gt; 0) {
+      await this.permissionModel.insertMany(permissionsToCreate);
+      this.logger.log(&#x60;Seeded ${permissionsToCreate.length} permissions&#x60;);
+    }
+  }
+
+  // Seed role admin va user.
+  // Role admin duoc gan tat ca permission hien co.
+  // Role user mac dinh khong gan permission nao.
+  private async seedRoles() {
+    // Lay toan bo _id permission de role admin co full quyen.
+    const permissions &#x3D; await this.permissionModel.find({}).select({ _id: 1 });
+    // Chuyen danh sach permission document thanh mang id.
+    const allPermissionIds &#x3D; permissions.map((item) &#x3D;&gt; item._id);
+
+    // Lay cac role can seed neu da ton tai.
+    const existingRoles &#x3D; await this.roleModel
+      .find({
+        name: { $in: [ADMIN_ROLE, USER_ROLE] },
+      })
+      .select({ name: 1 })
+      .lean();
+
+    // Tao Set role name ton tai de check nhanh.
+    const existingRoleNames &#x3D; new Set(existingRoles.map((item) &#x3D;&gt; item.name));
+    // Mang tam de chua cac role can tao moi.
+    const rolesToCreate: Array&lt;{
+      name: string;
+      description: string;
+      isActive: boolean;
+      permissions: any[];
+    }&gt; &#x3D; [];
+
+    // Neu chua co role ADMIN thi tao role admin.
+    if (!existingRoleNames.has(ADMIN_ROLE)) {
+      rolesToCreate.push({
+        name: ADMIN_ROLE,
+        description: &#x27;Admin role with full permissions&#x27;,
+        isActive: true,
+        permissions: allPermissionIds,
+      });
+    }
+
+    // Neu chua co role USER thi tao role user.
+    if (!existingRoleNames.has(USER_ROLE)) {
+      rolesToCreate.push({
+        name: USER_ROLE,
+        description: &#x27;Default role for end users&#x27;,
+        isActive: true,
+        permissions: [],
+      });
+    }
+
+    // Insert tat ca role can tao trong mot lan.
+    if (rolesToCreate.length &gt; 0) {
+      await this.roleModel.insertMany(rolesToCreate);
+      this.logger.log(&#x60;Seeded ${rolesToCreate.length} roles&#x60;);
+    }
+  }
+
+  // Seed user admin va user thuong.
+  // User se duoc tao sau khi role da ton tai.
+  private async seedUsers() {
+    // Lay role ADMIN va USER de map sang _id that trong collection roles.
+    const roles &#x3D; await this.roleModel
+      .find({
+        name: { $in: [ADMIN_ROLE, USER_ROLE] },
+      })
+      .select({ _id: 1, name: 1 })
+      .lean();
+
+    // Tao Map&lt;tenRole, roleId&gt; de tra cuu nhanh khi tao user.
+    const roleMap &#x3D; new Map(roles.map((role) &#x3D;&gt; [role.name, role._id]));
+    // Lay cac user seed neu da ton tai theo email.
+    const existingUsers &#x3D; await this.userModel
+      .find({
+        email: { $in: INIT_USERS.map((item) &#x3D;&gt; item.email) },
+      })
+      .select({ email: 1 })
+      .lean();
+
+    // Tao Set email ton tai de tranh insert trung.
+    const existingEmails &#x3D; new Set(existingUsers.map((item) &#x3D;&gt; item.email));
+    // Hash password seed mot lan roi dung lai cho cac user mau.
+    const initPasswordHash &#x3D; this.usersService.hashPassword(this.getInitPassword());
+
+    // Loc user chua ton tai va chuyen roleName thanh role _id.
+    const usersToCreate &#x3D; INIT_USERS.filter(
+      (item) &#x3D;&gt; !existingEmails.has(item.email),
+    )
+      .map((item) &#x3D;&gt; ({
+        name: item.name,
+        email: item.email,
+        password: initPasswordHash,
+        age: item.age,
+        gender: item.gender,
+        address: item.address,
+        role: roleMap.get(item.roleName),
+      }))
+      // Neu khong tim thay role _id thi bo qua user do de tranh insert loi.
+      .filter((item) &#x3D;&gt; item.role);
+
+    // Chi insert khi co user moi can tao.
+    if (usersToCreate.length &gt; 0) {
+      await this.userModel.insertMany(usersToCreate);
+      this.logger.log(&#x60;Seeded ${usersToCreate.length} users&#x60;);
+    }
+  }
+
+  // Hook cua NestJS.
+  // Ham nay tu dong chay sau khi module duoc khoi tao xong.
+  async onModuleInit() {
+    // Neu .env khong bat SHOULD_INIT&#x3D;true thi bo qua toan bo seed data.
+    if (!this.shouldInitData()) {
+      this.logger.log(&#x27;Skipping init data because SHOULD_INIT is not true&#x27;);
+      return;
+    }
+
+    // Seed permission truoc vi role admin can dung danh sach permission.
+    await this.seedPermissions();
+    // Seed role sau khi permission da co.
+    await this.seedRoles();
+    // Seed user sau khi role da co.
+    await this.seedUsers();
+
+    // Dem lai tong so document de log ket qua sau cung.
+    const [countUser, countRole, countPermission] &#x3D; await Promise.all([
+      this.userModel.countDocuments(),
+      this.roleModel.countDocuments(),
+      this.permissionModel.countDocuments(),
+    ]);
+
+    // Log tong ket de de theo doi khi app start.
+    this.logger.log(
+      &#x60;Init data completed. users&#x3D;${countUser}, roles&#x3D;${countRole}, permissions&#x3D;${countPermission}&#x60;,
+    );
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'DatabasesService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

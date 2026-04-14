@@ -3,10 +3,12 @@ import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'node:path';
+import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { TransformInterceptor } from './core/transform.interceptor';
 import * as cookieParser from 'cookie-parser';
+
 
 // Ham bootstrap la diem bat dau chay cua ung dung NestJS.
 async function bootstrap() {
@@ -14,6 +16,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const reflector = app.get(Reflector);
 
+  app.use(helmet());
   app.use(cookieParser());
 
   // Dang ky JWT guard o muc global theo cach khoi tao trong main.ts.
@@ -33,6 +36,9 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
+      whitelist: true,
+      // Bat loi ro rang khi client gui field khong nam trong DTO.
+      forbidNonWhitelisted: true,
     }),
   );
 

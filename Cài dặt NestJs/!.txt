@@ -29,3 +29,7 @@ cors
 
 -Upload file
 npm i -D @types/multer
+
+
+npm i --save-exact @nestjs/schedule@3.0.1
+npm install --save-dev @types/cron
